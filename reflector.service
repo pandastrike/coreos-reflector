@@ -1,0 +1,28 @@
+#=============================================================================================
+# Reflector is a demo Node server to illustrate deployment basics.
+#=============================================================================================
+
+[Unit]
+Description=Spin Up CoreOS Reflector Demo
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+
+# Register this server with the project's DNS.
+EnvironmentFile=/etc/environment
+ExecStartPre=/usr/bin/etcdctl set /dns/reflector/host ${COREOS_PUBLIC_IPV4}
+ExecStartPre=/usr/bin/etcdctl set /dns/reflector/port 80
+
+# Pull the custom Docker container from the public registry.
+ExecStartPre=-/usr/bin/docker kill reflector
+ExecStartPre=-/usr/bin/docker rm reflector
+ExecStartPre=/usr/bin/docker pull pandapup/coreos_reflector
+
+# Deploy Reflector
+ExecStart=/usr/bin/docker run --name reflector -p 80:80 pandapup/coreos_reflector
+
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,28 @@
+{
+  "name": "coreos-reflector",
+  "version": "1.0.0",
+  "description": "\"Hello World\" introduction  to CoreOS and Docker.",
+  "main": "reflector.coffee",
+  "scripts": {
+    "test": "None"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pandastrike/coreos-reflector.git"
+  },
+  "keywords": [
+    "node",
+    "coreos",
+    "docker",
+    "cloud"
+  ],
+  "author": "Dan Yoder",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pandastrike/coreos-reflector/issues"
+  },
+  "homepage": "https://github.com/pandastrike/coreos-reflector",
+  "dependencies": {
+    "coffee-script": "^1.8.0"
+  }
+}
