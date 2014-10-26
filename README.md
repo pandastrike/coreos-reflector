@@ -13,7 +13,7 @@ We're going to use Docker to run a cluster of CoreOS boxes and then start a clie
 
 You'll need both [Docker][1] and [Git][2] installed.
 
-### Run the Service
+### Run the Service Locally
 
 1. Clone this repo:
 
@@ -64,8 +64,24 @@ You'll need both [Docker][1] and [Git][2] installed.
   > Hello
   ```
 
+To stop the service, simply run:
+
+```
+fleetctl --tunnel fleet.local stop services/*.service
+```
+
 [0]:#todo
 [1]:#todo
 [2]:#todo
 [3]:#todo
 [4]:#todo
+
+## Run On A Remote Cluster
+
+To try this out on a remote cluster, just point to the Panda Strike CoreOS cluster standbox:
+
+```
+fleetctl -tunnel fleet.pandastrike.com start services/*.service
+```
+
+(You'll need a key from us to do this.)
