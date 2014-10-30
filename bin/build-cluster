@@ -38,7 +38,7 @@ echo "Fetching etcd endpoint address..."
 endpoint=$(curl https://discovery.etcd.io/new)
 echo ""
 echo "Setting the etcd enpoint in user-data: $endpoint"
-sed 's/put-token-here/'$endpoint'/' user-data > temp
+sed 's/put-token-here/'${endpoint}'/' user-data > temp
 mv temp user-data
 
 
