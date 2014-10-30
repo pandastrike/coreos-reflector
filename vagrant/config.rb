@@ -24,7 +24,7 @@
 # after the equals sign..
 
 # Size of the CoreOS cluster created by Vagrant
-$num_instances=<put-number-of-machines-here>
+$num_instances=put-number-of-machines-here
 
 # Official CoreOS channel from which updates should be downloaded
 $update_channel='stable'

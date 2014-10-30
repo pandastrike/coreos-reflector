@@ -24,16 +24,20 @@ cd ~/coreos-reflector/vagrant
 
 # We need to take the number of requested CoreOS machines, and place that into
 # config.rb so that vagrant will start them.
+echo ""
+echo "========================================================"
 echo "Setting config.rb with number of requested machines: $1"
-sed s/<put-number-of-machines-here>/$1/ config.rb > config.rb
+sed s/put-number-of-machines-here/$1/ config.rb > config.rb
 
 # Next, we need to set the url of the etcd endpoint.  This allows the CoreOS machines
 # to find each other, elect a leader and established distributed consensus.  This
 # url is fetched from the API service CoreOS provides.
+echo ""
 echo "Fetching etcd endpoint address..."
 endpoint=$(curl https://discovery.etcd.io/new)
+echo ""
 echo "Setting the etcd enpoint in user-data: $endpoint"
-sed s/<put-token-here>/$endpoint/ user-data > user-data
+sed s/put-token-here/$endpoint/ user-data > user-data
 
 
 #===================

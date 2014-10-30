@@ -30,6 +30,6 @@ RUN cd fleet && ./build
 # of this project's repository.  Clone the repository here.
 RUN git clone https://github.com/pandastrike/coreos-reflector.git
 
-RUN echo "The container is ready."
-RUN echo "Shell into this container and call the following command: "
-RUN echo "coreos-reflector/bin/build-cluster <number-of-machines-in-cluster>"
+# The container is ready.
+# Shell into this container and call the following command:
+# bash coreos-reflector/bin/build-cluster <number-of-machines-in-cluster>
