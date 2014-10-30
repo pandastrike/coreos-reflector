@@ -45,6 +45,9 @@ mv temp user-data
 #===================
 # Activation
 #===================
+# Setup VirtualBox
+vagrant box add precise32 http://files.vagrantup.com/precise32.box
+
 # Create a cluster according to the config files we just set.
 echo ""
 echo "Starting cluster. This may take a moment..."

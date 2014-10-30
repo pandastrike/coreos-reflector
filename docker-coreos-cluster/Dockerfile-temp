@@ -14,6 +14,7 @@ MAINTAINER Dan Yoder (dan@pandastrike.com)
 RUN pacman -Syu --noconfirm vagrant
 
 # Vagrant relies on tools in the VirtualBox package, another virtual machine library.
+RUN pacman -Syu --noconfirm virtualbox-host-module
 RUN pacman -Syu --noconfirm virtualbox
 
 # Next, we need the orchestration tools CoreOS uses, fleetctl.
