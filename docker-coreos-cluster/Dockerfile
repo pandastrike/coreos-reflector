@@ -28,7 +28,7 @@ RUN cd fleet && ./build
 
 # We need to gather the config files for Vagrant.  They are located in a directory
 # of this project's repository.  Clone the repository here.
-RUN git clone https://github.com/pandastrike/coreos-reflector.git
+#RUN git clone https://github.com/pandastrike/coreos-reflector.git
 
 # The container is ready.
 # Shell into this container and call the following command:
