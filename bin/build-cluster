@@ -1,0 +1,53 @@
+#!bin/bash/
+# This script is part of the CoreOS + Docker tutorial from PandaStrike.  It builds
+# a cluster of CoreOS machines on your local machine for testing.  It accomplishes
+# this by using Vagrant, but hides many of the annoying details that come along
+# with using that package.
+
+# Check to make sure we were given the number of machines to generate.
+# Otherwise display a help message.
+if [ $# -ne "1" ]; then
+  echo ""
+  echo "This script builds a CoreOS cluster on your local machine."
+  echo "Usage: build-cluster <number-of-machines>"
+  echo ""
+  exit 0
+fi
+
+
+#===================
+# Configuration
+#===================
+
+# Success.  Change into the vagrant directory.
+cd ~/coreos-reflector/vagrant
+
+# We need to take the number of requested CoreOS machines, and place that into
+# config.rb so that vagrant will start them.
+echo "Setting config.rb with number of requested machines: $1"
+sed s/<put-number-of-machines-here>/$1/ config.rb > config.rb
+
+# Next, we need to set the url of the etcd endpoint.  This allows the CoreOS machines
+# to find each other, elect a leader and established distributed consensus.  This
+# url is fetched from the API service CoreOS provides.
+echo "Fetching etcd endpoint address..."
+endpoint=$(curl https://discovery.etcd.io/new)
+echo "Setting the etcd enpoint in user-data: $endpoint"
+sed s/<put-token-here>/$endpoint/ user-data > user-data
+
+
+#===================
+# Activation
+#===================
+# Create a cluster according to the config files we just set.
+echo ""
+echo "Starting cluster. This may take a moment..."
+echo ""
+vagrant up
+
+# Delete the old known hosts so that we don't run into SSH errors.
+#rm /Users/David/.fleetctl/known_hosts
+#touch /Users/David/.fleetctl/known_hosts
+
+# Give the cluster your public key
+#vagrant ssh-config | sed -n "s/IdentityFile//gp" | xargs ssh-add
