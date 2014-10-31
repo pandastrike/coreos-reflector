@@ -1,0 +1,65 @@
+#!bin/bash/
+#===============================================================================
+# CoreOS - Reflector Demo
+#===============================================================================
+
+# This script is part of the CoreOS + Docker tutorial from PandaStrike.  It builds
+# a cluster of CoreOS machines on your local machine for testing.  To deploy the
+# cluster, we need to make use of virtual machines (VM) via VirtualBox.  Don't worry,
+# we hide many of the annoying details that come along with virtualization.
+
+#============================
+# Start a CoreOS machine
+#============================
+
+# Start by downloading the ISO image of CoreOS.
+echo ""
+echo "Downloading CoreOS ISO image"
+curl http://stable.release.core-os.net/amd64-usr/current/coreos_production_iso_image.iso > coreos_production_iso_image.iso
+
+iso_path=$(pwd)
+echo "Download Complete."
+
+# Create a VM.  We are going to gut and replace its operating system with CoreOS,
+# so it doesn't really matter what base OS we choose, but we tend to use
+# ArchLinux for PandaStrike work.
+echo ""
+echo "Creating VM"
+vboxmanage createvm --name 'coreos-reflector' --ostype ArchLinux_64 --register
+
+# Configure the VM.
+echo ""
+echo "Configuring VM"
+vboxmanage modifyvm 'coreos-reflector' --memory 500 --acpi on --boot1 dvd --nic1 nat
+
+# Create and configure a hard drive for the VM.
+echo ""
+echo "Creating Hard Drive"
+vboxmanage createhd --filename "coreos.vdi" --size 8000
+
+# Create and configure an integrated drive electronics (IDE) controller for the VM.
+# This virtualized piece of hardware will allow the hard drive and VM to connect.
+echo ""
+echo "Creating IDE Controller"
+vboxmanage storagectl 'coreos-reflector' --name "IDE Controller" --add ide --controller PIIX4
+
+# Connect the hard drive to the VM.
+echo ""
+echo "Attaching Hard Drive"
+vboxmanage storageattach 'coreos-reflector' --storagectl "IDE Controller" --port 0 --device 0 --type hdd --medium "coreos.vdi"
+
+# Point the VM at the CoreOS ISO image we downloaded so that it may boot with it.
+echo ""
+echo "Final Booting Preparations"
+vboxmanage storageattach 'coreos-reflector' --storagectl "IDE Controller" --port 0 --device 1 --type dvddrive --medium $iso_path"/coreos_production_iso_image.iso"
+
+
+echo ""
+echo "The virutal machine is now ready.  Select 'coreos-reflector' in the VirtualBox GUI and start it to bootup a CoreOS machine."
+
+# Finally, we may start the VM.
+#echo ""
+#echo "================"
+#echo "  Starting VM"
+#echo "================"
+#vboxheadless --startvm 'coreos-reflector'
