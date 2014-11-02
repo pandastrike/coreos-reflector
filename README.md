@@ -83,7 +83,7 @@ This is just an introduction.  There are many other options in a unit-file, so p
 ### Dockerfile
 The Docker container that gets called in `reflector.service` holds the simple Node server.  It is specified in `Dockerfile` for completeness, but the container has been uploaded to the public Docker registry.
 
-The Node server is specified in `reflector.coffee`.  It is the *Hello World* equivalent of NodeJS.  It is  a one-line server that echoes whatever is sent to it.  
+The Node server is specified in `reflector.coffee`.  It is the *Hello World* equivalent of NodeJS, a one-line server that echoes whatever is sent to it.  
 
 [0]:https://coreos.com/
 [1]:https://docker.com/
