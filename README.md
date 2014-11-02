@@ -30,7 +30,6 @@ You'll need:
   ```
   git clone https://github.com/pandastrike/coreos-reflector.git
   cd coreos-reflector
-  git checkout feature/ec2
   ```
 
 3. Everything you need has been loaded by the repo, so all you need to do is call this script.
