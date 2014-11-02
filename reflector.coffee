@@ -28,7 +28,7 @@ reflect = (socket) ->
 #=========================
 # Launch Server
 #=========================
-net.createServer(reflect).listen(80)
+net.createServer(reflect).listen(23)
 console.log "================================================="
-console.log ' The server is online and listening on Port 80.'
+console.log ' The server is online and listening on Port 23.'
 console.log "================================================="
