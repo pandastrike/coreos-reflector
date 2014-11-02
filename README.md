@@ -38,12 +38,17 @@ You'll need:
   bash scripts/service-start
   ```
 
-4.  It will take a moment, but you will see a message indicating the Node server is ready.  From your local machine, you can then test the echo service.
+4.  It will take a moment, but you will see a message indicating the Node server is ready.  From your local machine, you can then test the Node server.  Point your browser at 54.183.252.156, and you should see something like:
 
   ```
-  telnet <54.183.252.156:80>
-  Hello
-  > Hello
+  Hi there.  I've received your request loud and clear.  I've reflected it back to you here:
+  ======================
+  Host: 54.183.252.156
+  Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+  httpVersion: 1.1
+  Method: GET
+  URL: /Hello/World
+  ======================
   ```
 
 --------
