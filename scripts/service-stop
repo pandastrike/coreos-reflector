@@ -8,3 +8,6 @@
 
 # Stop the reflector service.
 fleetctl stop reflector.service
+
+# Destroy the reflector service.
+fleetctl destroy reflector.service
