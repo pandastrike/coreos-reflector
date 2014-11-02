@@ -1,0 +1,92 @@
+#!bin/bash/
+#===============================================================================
+# CoreOS - Reflector Demo
+#===============================================================================
+
+# This script is part of the CoreOS + Docker tutorial from PandaStrike.  It builds
+# a cluster of CoreOS machines on your local machine for testing.  To deploy the
+# cluster, we need to make use of virtual machines (VM) via VirtualBox.  Don't worry,
+# we hide many of the annoying details that come along with virtualization.
+
+#============================
+# Start a CoreOS machine
+#============================
+
+echo ""
+echo "===================================="
+echo "  Creating CoreOS Virtual Machine"
+echo "===================================="
+echo ""
+
+# Start by downloading the ISO image of CoreOS if it is not already present.
+if [ -f coreos_production_iso_image.iso ];
+  then
+    echo "CoreOS ISO image loaded."
+  else
+    echo "CoreOS ISO image is not present.  Fetching. One moment please..."
+    echo "=================================================================="
+    curl http://stable.release.core-os.net/amd64-usr/current/coreos_production_iso_image.iso > coreos_production_iso_image.iso
+    echo "Download Complete."
+fi
+
+# This variable stores the absolute filepath of the ISO image.  We'll need to feed it to vboxmanage a little later.
+iso_path=$(pwd)
+
+
+# Create a VM.  We are going to gut and replace its operating system with CoreOS,
+# so it doesn't really matter what base OS we choose, but we tend to use
+# ArchLinux for PandaStrike work.
+echo ""
+echo "Creating VM..."
+vboxmanage createvm --name 'coreos-reflector' --ostype ArchLinux_64 --register
+
+# Configure the VM.
+echo ""
+echo "Configuring VM..."
+vboxmanage modifyvm 'coreos-reflector' --memory 500 --acpi on --boot1 dvd --nic1 nat
+
+# Expose the VM port by forwarding a host port.  We want to be able to ping the VM later.
+vboxmanage modifyvm "coreos-reflector" --natpf1 "guesthttp,tcp,,3000,,80"
+
+# Create and configure a hard drive for the VM. (Size is 8GB)
+echo ""
+echo "Creating Hard Drive..."
+vboxmanage createhd --filename "coreos.vdi" --size 8000
+
+# Create and configure an integrated drive electronics (IDE) controller for the VM.
+# This virtualized piece of hardware will allow the hard drive and VM to connect.
+echo ""
+echo "Creating IDE Controller..."
+vboxmanage storagectl 'coreos-reflector' --name "IDE Controller" --add ide --controller PIIX4
+
+# Connect the hard drive to the VM.
+echo ""
+echo "Attaching Hard Drive..."
+vboxmanage storageattach 'coreos-reflector' --storagectl "IDE Controller" --port 0 --device 0 --type hdd --medium "coreos.vdi"
+
+# Point the VM at the CoreOS ISO image we downloaded so that it may boot with it.
+echo ""
+echo "Final Booting Preparations..."
+vboxmanage storageattach 'coreos-reflector' --storagectl "IDE Controller" --port 0 --device 1 --type dvddrive --medium $iso_path"/coreos_production_iso_image.iso"
+
+
+echo ""
+echo "The virutal machine is now configured.  It will take a moment to boot."
+echo "."
+echo "."
+echo "."
+
+# Finally, we may start the VM.
+echo ""
+echo "================"
+echo "  Starting VM"
+echo "================"
+vboxmanage startvm 'coreos-reflector'
+
+# This version of CoreOS is an ISO that is running in RAM.  To get full functionality, we need to install CoreOS to disk, using the 'coreos-install' script that has been placed in the ISO for our convenience.
+
+# TODO: Find a less hacky way to wait.  guestcontrol, which allows us to run commands on the VM from the Host commandline does not function while the VM is still booting.  I'm not sure how to get a signal from the VM when it is ready, so here we just wait a fixed amount of time.
+echo ""
+echo "Installing CoreOS to Disk: One moment please..."
+sleep 30
+vboxmanage guestcontrol 'coreos-reflector' execute --image '/usr/bin/sudo /usr/bin/coreos-install /dev/sda' --username 'core'
