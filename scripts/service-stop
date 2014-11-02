@@ -1,0 +1,10 @@
+#!bin/bash/
+#===============================================================================
+# CoreOS - Reflector Demo
+#===============================================================================
+
+# This script is part of the CoreOS + Docker tutorial from PandaStrike.  It
+# stops the "reflector" service.
+
+# Stop the reflector service.
+fleetctl stop reflector.service

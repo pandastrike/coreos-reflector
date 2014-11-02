@@ -1,0 +1,20 @@
+#===============================================================================
+# CoreOS - Reflector Demo
+#===============================================================================
+# This service unit-file is part of the CoreOS + Docker tutorial from PandaStrike.
+# It loads a Docker container containing a super simple Node server.
+
+
+[Unit]
+Description=CoreOS Reflector Demo
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+
+# Pull the custom Docker container from the public registry.
+ExecStartPre=/usr/bin/docker pull pandapup/coreos_reflector
+
+# Deploy Reflector
+ExecStart=/usr/bin/docker run --name reflector -p 80:80 pandapup/coreos_reflector
