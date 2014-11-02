@@ -13,7 +13,6 @@ Spinning up a CoreOS cluster is not the focus of this tutorial.  However, CoreOS
 You'll need:
 - Our private key to access the test cluster
 - SSH
-- Telnet
 
 ## Deployment
 
