@@ -1,0 +1,26 @@
+#!bin/bash/
+#===============================================================================
+# CoreOS - Reflector Demo
+#===============================================================================
+
+# This script is part of the CoreOS + Docker tutorial from PandaStrike.  It starts
+# the "reflector" service in fleet and displays what's going on using the journal command.
+
+#============================
+# Start a CoreOS machine
+#============================
+
+echo ""
+echo "==============================="
+echo "  CoreOS - Reflector Demo"
+echo "==============================="
+echo ""
+
+echo "Starting Reflector Service"
+fleetctl start reflector.service
+
+echo ""
+echo "Displaying Service Log - Press Ctrl + C to exit the display."
+echo ""
+echo "==========================="
+fleetctl journal --follow=true reflector.service

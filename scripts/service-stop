@@ -4,10 +4,7 @@
 #===============================================================================
 
 # This script is part of the CoreOS + Docker tutorial from PandaStrike.  It
-# deactivates the CoreOS machine and VirtualBox based VM.
+# stops the "reflector" service.
 
-# "Power Off" the VM.
-vboxmanage controlvm 'coreos-reflector' poweroff
-
-# Delete the VM.
-vboxmanage unregistervm "coreos-reflector" --delete
+# Stop the reflector service.
+fleetctl stop reflector.service
