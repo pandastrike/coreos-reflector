@@ -5,8 +5,11 @@ MAINTAINER Dan Yoder (dan@pandastrike.com)
 # CoreOS - Reflector Demo
 #===============================================================================
 # This Dockerfile is part of PandaStrike's tutorial repo for CoreOS + Docker.
-# It is meant to demo deployment basics in a single-server example.  We make use
-# of the ArchLinux Docker image as a base and build from there.
+# It is meant to demo deployment basics in a single-server example.  While this
+# container is specified here for storage, in the app we pull the container from
+# pandapup/coreos_reflector.
+
+# We make use of the ArchLinux Docker image as a base and build from there.
 
 # Install git. We use git to pull this example from its public repository into
 # this Docker container.

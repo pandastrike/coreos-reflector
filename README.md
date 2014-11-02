@@ -23,9 +23,14 @@ You'll need to install VirtualBox.
 2. Start the CoreOS machine:
 
   ```
-  bin/cluster-up
+  scripts/cluster-up
   ```
 
+  **Note: This is where the project is currently located.  We just need to iron out
+  a couple kinks in how the cluster-up script automates commands to the guest
+  CoreOS machine.**
+
+## Work in Progress...
 
 3. Deploy the reflector service to the cluster:
 
@@ -62,13 +67,3 @@ To stop the service, simply run:
 [2]:#todo
 [3]:#todo
 [4]:#todo
-
-## Run On A Remote Cluster
-
-To try this out on a remote cluster, just point to the Panda Strike CoreOS cluster standbox:
-
-```
-fleetctl -tunnel fleet.pandastrike.com start services/*.service
-```
-
-(You'll need a key from us to do this.)
