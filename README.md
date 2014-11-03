@@ -6,74 +6,129 @@ A _Hello World_ introduction to [CoreOS][0] and [Docker][1].
 
 We're going to use PandaStrike's CoreOS test cluster, which we're running on Amazon's EC2 service for you, to deploy a simple Node server.  
 
-Spinning up a CoreOS cluster is not the focus of this tutorial.  However, CoreOS provides a regularly updated, publicly available image of their OS, so building a cluster on Amazon (or any cloud provider) is painless.
+Spinning up a CoreOS cluster is not the focus of this tutorial.  However, CoreOS provides a regularly updated, publicly available image of their OS, so building a cluster on Amazon (or any cloud provider) is relatively painless.
 
 ## Prerequisites
 
 You'll need:
-- Our private key to access the test cluster
-- SSH
+1. Our **private key** to access the test cluster
+2. The orchestration tool, **fleetctl**.  This is available via your OS package manager.
+
+    OSX users with HomeBrew can use:
+    ```
+    brew install fleetctl
+    ```
+    Ubuntu users can use:
+    ```
+    apt-get install fleetctl
+    ```
 
 ## Deployment
 
-1. The private key will be provided via the file `CoreOS-Reflector.pem`.  Use this with SSH to login.  You'll be logged into a fresh CoreOS machine, and it has everything you need to continue.  
+1. The private key will be provided to you via the file `CoreOS-Reflector.pem`.  Add this private key as an identity to your SSH authentication agent.  This grants you remote access to our CoreOS cluster via fleetctl's SSH based tools (More on that later).  
 
   > TODO - Talk to Lance about setting up an address with DNS
 
   ```
-  ssh -i CoreOS-Reflector.pem core@54.183.252.156
+  ssh-add CoreOS-Reflector.pem
+  > Identity added: CoreOS-Reflector.pem (CoreOS-Reflector.pem)
   ```
 
-2. Clone this repo.
+  Test that your setup is configured properly by running:
+  ```
+  fleetctl --tunnel 54.183.252.156 list-machines
+  ```
+  If everything is working, this will produce a list of every CoreOS machine in our cluster, and will look something like this.
+  ```
+  > MACHINE		IP		        METADATA
+  > 4916b458...	172.31.4.246	  -
+  > 736774fb...	172.31.28.123	 -
+  > db45d108...	172.31.28.122	 -
+  ```
+
+2. Clone this repo to your local machine.
 
   ```
   git clone https://github.com/pandastrike/coreos-reflector.git
   cd coreos-reflector
   ```
 
-3. Everything you need has been loaded by the repo, so all you need to do is call this script.
+3. Now, we will use fleetctl's `start` command. CoreOS relies on `*.service` files to specify jobs for the cluster (See *Background* for more information).  To access the cluster from your local machine, we need to use the `--tunnel <address>` flag, which will make use of SSH for you.  
+
+  With this flag, you only need to type the specific fleetctl command and the service it applies to.
 
   ```
-  bash scripts/service-start
+  fleetctl --tunnel 54.183.252.156 start reflector.service
   ```
 
-4.  It will take a moment, but you will see a message indicating the Node server is ready.  From your local machine, you can then test the Node server.  Point your browser at 54.183.252.156, and you should see something like:
+4. Now we are going to monitor your deployment with fleetctl's `journal` command.  Your job has been deployed on the CoreOS cluster, but where is it? Even though it could be on any one of several machines, you can always reference this job through its `*.service` file.
 
   ```
-  Hi there.  I've received your request loud and clear.  I've reflected it back to you here:
-  ======================
-  Host: 54.183.252.156
-  Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
-  httpVersion: 1.1
-  Method: GET
-  URL: /Hello/World
-  ======================
+  fleetctl --tunnel 54.183.252.156 journal --follow=true reflector.service
+  ```
+  It might take a moment, but you will see a message indicating the Node server is ready.  You should also see a message listing the Public IP Address of the CoreOS machine running your server.  You'll need this for the next step.
+  ```
+  Starting CoreOS Reflector Demo...
+  ======================================
+  New Service Started
+  ======================================
+  Public IP Address: 54.183.252.156
+  Pulling repository pandapup/coreos_reflector
+  Started CoreOS Reflector Demo.
+  =================================================
+  The server is online and listening on Port 80.
+  =================================================
   ```
 
---------
+5. We are ready to test the Node server from your local machine.  Open a new terminal.  Using the `telnet` command-line tool, connect to the IP Address you noted above, port 80.  Send a message, and you should see it sent right back to you.
 
-You can stop the CoreOS logging with `ctrl+C`.  To stop the server, run:
+  ```
+  telnet 54.183.252.156 80
+  > Trying 54.183.252.156...
+  > Connected to ec2-54-183-252-156.us-west-1.compute.amazonaws.com.
+  > Escape character is '^]'.
+
+  Pandas Are Awesome.
+  > Pandas Are Awesome.
+  ```
+  Say it with me:  **Pandas Are Awesome.**  Congratulations, you have successfully completed your first cloud deployment with CoreOS!
+
+## Shutdown
+You can stop the CoreOS journaling with `ctrl+C`.
 
   > TODO: Talk to Lance about rebooting to a fresh CoreOS machine on logout.
 
+  We also have to be considerate and release cluster resources when we are done.  To release the CoreOS machine running our job, we use the `stop` command and reference the service name.
+
   ```
-  bash scripts/service-stop
+  fleetctl --tunnel 54.183.252.156 stop reflector.service
+  > Unit reflector.service loaded on 4916b458.../172.31.4.246
   ```
+
+  To remove the service from the cluster's pool we must use the `destroy` command.
+  ```
+  fleetctl --tunnel 54.183.252.156 destroy reflector.service
+  > Destroyed reflector.service
+  ```
+  **Note: This command is also important if we edit our `*.service` file locally and want to give the cluster the new version.**
+
+--------
+
 
 ## Background
-CoreOS is a lightweight OS that is built to work in a cluster.  It uses a distributed key-value store called etcd to communicate with other CoreOS machines.  Because it is so lightweight, CoreOS relies on Docker to load and run whatever application you ask it to deploy.
-
-Because CoreOS is designed to cluster, it accepts jobs as a cluster.  Applications and their components are submitted as jobs to a system called fleet.  fleet ties together two technologies.  Working together, these allow fleet to be a control system that operates at the cluster level.  
-- Individual machines use systemd and accept instructions via [unit-files][2].  
+CoreOS is an operating system so lightweight that it relies on Docker to load and run whatever application you ask it to deploy.  CoreOS machines are designed to connect and bear a workload as a cluster.  Applications and their components are submitted as jobs to a control system called fleet.  By tying two technologies together, fleet is able to sit at the cluster level, accept your commands, and orchestrate efforts accordingly.
+- Individual machines use the established tool systemd and accept instructions via [unit-files][2].  
 - Communication between machines is handled with [etcd][3], a key-value store that uses the Raft algorithm to achieve distributed consensus.
 
 ---
-### service-start
-If you examine the bash script `scripts/service-start`, you will see `fleetctl` is called to launch the reflector app.  `fleetctl` accepts "services" defined as unit-files. These lay out exactly what the CoreOS machine needs to call to spin-up your app.
+### fleetctl
+If you examine the deployment instructions, you will see `fleetctl` is called to launch the reflector app.  `fleetctl` accepts "services" defined as unit-files. These lay out exactly what the CoreOS machine needs to call to spin-up your app, similar to a shell script.
 
 ---
 ### reflector.service
-Take a look at `reflector.service`.  We keep it pretty simple for this example.  `[Unit]` just describes the service and lets fleetctl know what services need to be active before it can start this unit.  In this case, we need Docker to be active before we can do anything.
+Take a look at `reflector.service`.  We keep it pretty simple for this example.  
+
+`[Unit]` just describes the service and lets fleetctl know what services need to be active before it can start this unit.  In this case, we need Docker to be active before we can do anything.
 
 `[Service]` defines the actual guts of the unit.  There are two main types of commands here.
 
