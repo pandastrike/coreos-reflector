@@ -11,17 +11,19 @@ Spinning up a CoreOS cluster is not the focus of this tutorial.  However, CoreOS
 ## Prerequisites
 
 You'll need:
+
 1. Our **private key** to access the test cluster
+
 2. The orchestration tool, **fleetctl**.  This is available via your OS package manager.
 
-    OSX users with HomeBrew can use:
-    ```
+OSX users with HomeBrew can use:
+
     brew install fleetctl
-    ```
-    Ubuntu users can use:
-    ```
+
+Ubuntu users can use:
+
     apt-get install fleetctl
-    ```
+
 
 ## Deployment
 
@@ -117,12 +119,12 @@ You can stop the CoreOS journaling with `ctrl+C`.
 
 ## Background
 CoreOS is an operating system so lightweight that it relies on Docker to load and run whatever application you ask it to deploy.  CoreOS machines are designed to connect and bear a workload as a cluster.  Applications and their components are submitted as jobs to a control system called fleet.  By tying two technologies together, fleet is able to sit at the cluster level, accept your commands, and orchestrate efforts accordingly.
-- Individual machines use the established tool systemd and accept instructions via [unit-files][2].  
+- Individual machines use the established tool, systemd, and accept instructions via [unit-files][2].  
 - Communication between machines is handled with [etcd][3], a key-value store that uses the Raft algorithm to achieve distributed consensus.
 
 ---
 ### fleetctl
-If you examine the deployment instructions, you will see `fleetctl` is called to launch the reflector app.  `fleetctl` accepts "services" defined as unit-files. These lay out exactly what the CoreOS machine needs to call to spin-up your app, similar to a shell script.
+If you examine the deployment instructions, you will see `fleetctl` (pronounced "fleet control") is called to launch the reflector app.  `fleetctl` is a command-line tool that is part of the larger software package, fleet.  fleetctl accepts "services" defined as unit-files. These lay out exactly what the CoreOS machine needs to call to spin-up your app, similar to a shell script.
 
 ---
 ### reflector.service
