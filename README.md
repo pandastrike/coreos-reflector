@@ -12,9 +12,11 @@ Spinning up a CoreOS cluster is not the focus of this tutorial.  However, CoreOS
 
 You'll need:
 
-1. Our **private key** to access the test cluster
+1. Our **private key** to access the test cluster.
 
-2. The orchestration tool, **fleetctl**.  This is available via your OS package manager.
+2. git to pull this repo.
+
+3. The orchestration tool, **fleetctl**.  This is available via your OS package manager.
 
 OSX users with HomeBrew can use:
 
