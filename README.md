@@ -14,7 +14,7 @@ You'll need:
 
 1. Our **private key** to access the test cluster.
 
-2. git to pull this repo.
+2. **git** to pull this repo.
 
 3. The orchestration tool, **fleetctl**.  This is available via your OS package manager.
 
