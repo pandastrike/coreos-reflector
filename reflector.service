@@ -13,6 +13,14 @@ Requires=docker.service
 [Service]
 TimeoutStartSec=0
 
+ExecStartPre=/usr/bin/echo "======================="
+ExecStartPre=/usr/bin/echo "  New Service Started"
+ExecStartPre=/usr/bin/echo "======================="
+
+# Display this service's public IP address.
+EnvironmentFile=/etc/environment
+ExecStartPre=/usr/bin/echo "Public IP Address: ${COREOS_PUBLIC_IPV4}"
+
 # Pull the custom Docker container from the public registry.
 ExecStartPre=/usr/bin/docker pull pandapup/coreos_reflector
 
