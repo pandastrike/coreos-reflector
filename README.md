@@ -27,25 +27,24 @@ Ubuntu users can use:
 
 ## Deployment
 
-1. The private key will be provided to you via the file `CoreOS-Reflector.pem`.  Add this private key as an identity to your SSH authentication agent.  This grants you remote access to our CoreOS cluster via fleetctl's SSH based tools (More on that later).  
-
-  > TODO - Talk to Lance about setting up an address with DNS
+1. The private key will be provided to you via the file `ec2-pandastrike-id_rsa`.  Add this private key as an identity to your SSH authentication agent.  This grants you remote access to our CoreOS cluster via fleetctl's SSH based tools (More on that later).  
 
   ```
-  ssh-add CoreOS-Reflector.pem
-  > Identity added: CoreOS-Reflector.pem (CoreOS-Reflector.pem)
+  chmod 400 ec2-pandastrike-id_rsa
+  ssh-add ec2-pandastrike-id_rsa
+  > Identity added: ec2-pandastrike-id_rsa (ec2-pandastrike-id_rsa)
   ```
 
   Test that your setup is configured properly by running:
   ```
-  fleetctl --tunnel 54.183.252.156 list-machines
+  fleetctl --tunnel coreos.pandastrike.com list-machines
   ```
   If everything is working, this will produce a list of every CoreOS machine in our cluster, and will look something like this.
   ```
   > MACHINE		IP		        METADATA
-  > 4916b458...	172.31.4.246	  -
-  > 736774fb...	172.31.28.123	 -
-  > db45d108...	172.31.28.122	 -
+  > 05cd8495...	10.229.64.167	 -
+  > 50b58f24...	10.250.163.185	-
+  > c0171bc5...	10.228.6.17	   -
   ```
 
 2. Clone this repo to your local machine.
@@ -60,13 +59,14 @@ Ubuntu users can use:
   With this flag, you only need to type the specific fleetctl command and the service it applies to.
 
   ```
-  fleetctl --tunnel 54.183.252.156 start reflector.service
+  fleetctl --tunnel coreos.pandastrike.com start reflector.service
+  > Unit reflector.service launched on 05cd8495.../10.229.64.167
   ```
 
 4. Now we are going to monitor your deployment with fleetctl's `journal` command.  Your job has been deployed on the CoreOS cluster, but where is it? Even though it could be on any one of several machines, you can always reference this job through its `*.service` file.
 
   ```
-  fleetctl --tunnel 54.183.252.156 journal --follow=true reflector.service
+  fleetctl --tunnel coreos.pandastrike.com journal --follow=true reflector.service
   ```
   It might take a moment, but you will see a message indicating the Node server is ready.  You should also see a message listing the Public IP Address of the CoreOS machine running your server.  You'll need this for the next step.
   ```
@@ -74,7 +74,7 @@ Ubuntu users can use:
   ======================================
   New Service Started
   ======================================
-  Public IP Address: 54.183.252.156
+  Public IP Address: 184.72.26.40
   Pulling repository pandapup/coreos_reflector
   Started CoreOS Reflector Demo.
   =================================================
@@ -85,9 +85,9 @@ Ubuntu users can use:
 5. We are ready to test the Node server from your local machine.  Open a new terminal.  Using the `telnet` command-line tool, connect to the IP Address you noted above, port 80.  Send a message, and you should see it sent right back to you.
 
   ```
-  telnet 54.183.252.156 80
-  > Trying 54.183.252.156...
-  > Connected to ec2-54-183-252-156.us-west-1.compute.amazonaws.com.
+  telnet 184.72.26.40 80
+  > Trying 184.72.26.40...
+  > Connected to ec2-184-72-26-40.us-west-1.compute.amazonaws.com.
   > Escape character is '^]'.
 
   Pandas Are Awesome.
@@ -98,21 +98,19 @@ Ubuntu users can use:
 ## Shutdown
 You can stop the CoreOS journaling with `ctrl+C`.
 
-  > TODO: Talk to Lance about rebooting to a fresh CoreOS machine on logout.
-
   We also have to be considerate and release cluster resources when we are done.  To release the CoreOS machine running our job, we use the `stop` command and reference the service name.
 
   ```
-  fleetctl --tunnel 54.183.252.156 stop reflector.service
-  > Unit reflector.service loaded on 4916b458.../172.31.4.246
+  fleetctl --tunnel coreos.pandastrike.com stop reflector.service
+  > Unit reflector.service loaded on 05cd8495.../10.229.64.167
   ```
 
   To remove the service from the cluster's pool we must use the `destroy` command.
   ```
-  fleetctl --tunnel 54.183.252.156 destroy reflector.service
+  fleetctl --tunnel coreos.pandastrike.com destroy reflector.service
   > Destroyed reflector.service
   ```
-  **Note: This command is also important if we edit our `*.service` file locally and want to give the cluster the new version.**
+  **Note: This command is also important if we edit our `*.service` file locally and want to give the cluster the new version.  We must destroy the old version first.**
 
 --------
 
