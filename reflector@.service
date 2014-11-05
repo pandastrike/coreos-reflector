@@ -20,6 +20,13 @@ ExecStartPre=/usr/bin/echo "======================="
 # Display this service's public IP address.
 EnvironmentFile=/etc/environment
 ExecStartPre=/usr/bin/echo "Public IP Address: ${COREOS_PUBLIC_IPV4}"
+ExecStartPre=/usr/bin/echo "Port: 80%i"
+
+
+# Delete any Docker containers that share the name of the one we are about to start.
+# Directives with "=-" are allowed to fail without consequence
+ExecStartPre=-/usr/bin/docker kill reflector-%i
+ExecStartPre=-/usr/bin/docker rm reflector-%i
 
 # Pull the custom Docker container from the public registry.
 ExecStartPre=/usr/bin/docker pull pandapup/coreos_reflector
