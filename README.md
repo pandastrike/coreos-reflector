@@ -60,20 +60,19 @@ Ubuntu users can use:
 
 3. Now, we will use fleetctl's `start` command. CoreOS relies on `*.service` files to specify jobs for the cluster (See *Background* for more information). `reflector@.service` is a *template* service file, so you'll need to add your userID to the filename.  For the rest of this tutorial, user `02` will be shown.
 
-  To access the cluster from your local machine, we need to use the `--tunnel <address>` flag, which will make use of SSH for you.  With this flag, you only need to type the specific fleetctl command and the service it applies to.  
+  To access the cluster from your local machine, we need to use fleetctl's `--tunnel <address>` flag, which will make use of SSH for you.  With this flag, you only need to type the specific fleetctl command and the service it applies to.  
 
   ```
   fleetctl --tunnel coreos.pandastrike.com start reflector@02.service
-  > Unit reflector.service launched on 05cd8495.../10.229.64.167
   ```
 
 4. Now we are going to monitor your deployment with fleetctl's `journal` command.  Your job has been deployed on the CoreOS cluster, but where is it? Even though it could be on any one of several machines, you can always reference this job through its `*.service` file.
 
-  Ignore `Error response from daemon: No such container` if it appears in your log.  This is an optional command used to clear away any old container that shares a name with one you're about to start.
-
   ```
   fleetctl --tunnel coreos.pandastrike.com journal --follow=true reflector@02.service
   ```
+  Ignore `Error response from daemon: No such container` if it appears in your log.  This is an optional command used to clear away any old container that shares a name with one you're about to start.
+
   It might take a moment, but you will see a message indicating the Node server is ready.  You should also see a message listing the Public IP Address of the CoreOS machine running your server.  You'll need this for the next step.
   ```
   Starting CoreOS Reflector Demo...
