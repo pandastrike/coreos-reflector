@@ -25,4 +25,4 @@ ExecStartPre=/usr/bin/echo "Public IP Address: ${COREOS_PUBLIC_IPV4}"
 ExecStartPre=/usr/bin/docker pull pandapup/coreos_reflector
 
 # Deploy Reflector
-ExecStart=/usr/bin/docker run --name reflector -p 80:80 pandapup/coreos_reflector
+ExecStart=/usr/bin/docker run --name reflector-%i -p 80%i:80 pandapup/coreos_reflector
