@@ -73,7 +73,7 @@ Ubuntu users can use:
   ```
   Ignore `Error response from daemon: No such container` if it appears in your log.  This is an optional command used to clear away any old container that shares a name with one you're about to start.
 
-  It might take a moment, but you will see a message indicating the Node server is ready.  You should also see a message listing the Public IP Address of the CoreOS machine running your server.  You'll need this for the next step.
+  It might take a moment, but you will see a message indicating the Node server is ready.  You should also see a message listing the Public IP Address and exposed port of the CoreOS machine running your server.  You'll need these for the next step.
   ```
   Starting CoreOS Reflector Demo...
   ======================================
@@ -88,7 +88,7 @@ Ubuntu users can use:
   =================================================
   ```
 
-5. We are ready to test the Node server from your local machine.  Open a new terminal.  Using the `telnet` command-line tool, connect to the IP Address you noted above, port 80.  Send a message, and you should see it sent right back to you.
+5. We are ready to test the Node server from your local machine.  Open a new terminal.  Using the `telnet` command-line tool, connect to the IP Address and port you noted above.  Send a message, and you should see it sent right back to you.
 
   ```
   telnet 184.72.26.40 8002
