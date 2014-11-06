@@ -21,7 +21,7 @@ net = require 'net'
 # Server Definition
 #=========================
 reflect = (socket) ->
-  socket.pipe socket + "Hi there, I snuck this in."
+  socket.pipe socket
 
 
 #=========================
