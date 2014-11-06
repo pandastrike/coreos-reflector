@@ -146,7 +146,7 @@ Now, there is a tradeoff to this ease.  Eventually you'll need recreate your Doc
 - Edit the third line of the runtime command in the `.service` file to read:
  
   ```
-  git pull && git checkout <branch name> && npm install && \
+  git pull && git checkout <branch name> && git pull && npm install && \
   ```
 - Destroy your current service with `destroy`
 - Restart your service with `start`
