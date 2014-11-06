@@ -138,7 +138,7 @@ Before we actually start the server, we do a quick `git pull` and `npm install`.
 
 And your edits are deployed to the cluster...  No need to re-create your container or involve third party services. So easy!
 
-Now, there is a tradeoff to this ease.  Eventually you'll need recreate your Docker container to avoid version drift and keep the spin-up time short.  So, do that at major milestones, but for most of your work, CoreOS gives you the ability to ***iterate in the cluster*** as conveniently as if it were running on your local machine.
+Now, there is a tradeoff to this ease.  Eventually you'll need recreate your Docker container to avoid version drift in your dependencies and to keep the spin-up time short.  So, do that at major milestones, but for most of your work, CoreOS gives you the ability to ***iterate in the cluster*** as conveniently as if it were running on your local machine.
 
 ### Try this out!  
 - Make an edit to the Node server
