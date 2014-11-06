@@ -34,5 +34,5 @@ ExecStartPre=/usr/bin/docker pull pandapup/coreos_reflector
 # Deploy Reflector
 ExecStart=/usr/bin/docker run --name reflector-%i -p 80%i:80 pandapup/coreos_reflector /bin/bash -c \
   "cd coreos-reflector && \
-    git pull && git checkout edit-demo && npm install && \
+    git pull && git checkout edit-demo && git pull && npm install && \
     coffee reflector.coffee"
