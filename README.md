@@ -12,7 +12,7 @@ Spinning up a CoreOS cluster is not the focus of this tutorial.  However, CoreOS
 
 You'll need:
 
-1. Our **private key** to access the test cluster.
+1. To coordinate with us to get your **public key** into our cluster for SSH access.
 
 2. Your **userID**, a value ranging from 00 to 99
 
