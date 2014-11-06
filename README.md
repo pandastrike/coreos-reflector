@@ -144,7 +144,7 @@ Now, there is a tradeoff to this ease.  Eventually you'll need recreate your Doc
 - Make an edit to the Node server
 - Push it to a new branch of this repo (Please don't go editing `master` :P)
 - Edit the third line of the runtime command in the `.service` file to read:
-- 
+ 
   ```
   git pull && git checkout <branch name> && npm install && \
   ```
