@@ -28,6 +28,10 @@ reflect = (socket) ->
 # Launch Server
 #=========================
 net.createServer(reflect).listen(80)
-console.log '===================================='
-console.log '  The server is online and ready.'
-console.log '===================================='
+console.log '#################################################'
+console.log 'Seriously, Pandas Are Awesome!!'
+console.log '#################################################'
+console.log ''
+console.log '================================================='
+console.log 'Oh, yeah....  and the server is online and ready.'
+console.log '================================================='
