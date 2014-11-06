@@ -69,7 +69,7 @@ Ubuntu users can use:
 4. Now we are going to monitor your deployment with fleetctl's `journal` command.  Your job has been deployed on the CoreOS cluster, but where is it? Even though it could be on any one of several machines, you can always reference this job through its `*.service` file.
 
   ```
-  fleetctl --tunnel coreos.pandastrike.com journal --follow=true reflector@02.service
+  fleetctl --tunnel coreos.pandastrike.com journal -f --lines=30 reflector@02.service
   ```
   Ignore `Error response from daemon: No such container` if it appears in your log.  This is an optional command used to clear away any old container that shares a name with one you're about to start.
 
@@ -83,6 +83,7 @@ Ubuntu users can use:
   Port: 8002
   Pulling repository pandapup/coreos_reflector
   Started CoreOS Reflector Demo.
+  <Other Stuff from git and npm.  We'll cover it in a moment.>
   =================================================
   The server is online and ready.
   =================================================
@@ -117,6 +118,49 @@ You can stop the CoreOS journaling with `ctrl+C`.
   > Destroyed reflector.service
   ```
   **Note: This command is also important if we edit our `*.service` file locally and want to give the cluster the new version.  We must destroy the old version first.**
+
+## Deploying Edits to Your Repository
+There is one impressive benefit to launching your server with CoreOS.  If you look at where we start the Docker container in `reflector.service`, you should see this runtime command:
+
+  ```
+  /bin/bash -c \
+  "cd coreos-reflector && \
+  git pull && npm install && \
+  coffee reflector.coffee"
+  ```
+
+Before we actually start the server, we do a quick `git pull` and `npm install`.  That means that when you push updates to GitHub, you just need to restart your service with:
+
+  ```
+  fleetctl --tunnel coreos.pandastrike.com destroy reflector@02.service
+  fleetctl --tunnel coreos.pandastrike.com start reflector@02.service
+  ```
+
+And your edits are deployed to the cluster...  No need to re-create your container or involve third party services. So easy!
+
+Now, there is a tradeoff to this ease.  Eventually you'll need recreate your Docker container to avoid version drift and keep the spin-up time short.  So, do that at major milestones, but for most of your work, CoreOS gives you the ability to ***iterate in the cluster*** as conveniently as if it were running on your local machine.
+
+### Try this out!  
+- Make an edit to the Node server
+- Push it to a new branch of this repo (Please don't go editing `master` :P)
+- Edit the third line of the runtime command in the `.service` file to read:
+  ```
+  git pull && git checkout <branch name> && npm install && \
+  ```
+- Destroy your current service with `destroy`
+- Restart your service with `start`
+- See your changes deployed in the cloud and be amazed!
+
+  From the branch `edit-demo`:
+  ```
+  #################################################
+  Seriously, Pandas Are Awesome!!
+  #################################################
+  
+  =================================================
+  Oh, yeah....  and the server is online and ready.
+  =================================================
+  ```
 
 --------
 
