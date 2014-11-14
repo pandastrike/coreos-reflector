@@ -31,13 +31,7 @@ Ubuntu users can use:
 
 ## Deployment
 
-1. The private key will be provided to you via the file `ec2-pandastrike-id_rsa`.  Add this private key as an identity to your SSH authentication agent.  This grants you remote access to our CoreOS cluster via fleetctl's SSH based tools (More on that later).  
-
-  ```
-  chmod 400 ec2-pandastrike-id_rsa
-  ssh-add ec2-pandastrike-id_rsa
-  > Identity added: ec2-pandastrike-id_rsa (ec2-pandastrike-id_rsa)
-  ```
+1. Assuming that we've got your public key entered into our cluster as an `authorized_key`, you should be ready to get your hands dirty.
 
   Verify that your setup is configured properly by running:
   ```
@@ -144,7 +138,7 @@ Now, there is a tradeoff to this ease.  Eventually you'll need recreate your Doc
 - Make an edit to the Node server
 - Push it to a new branch of this repo (Please don't go editing `master` :P)
 - Edit the third line of the runtime command in the `.service` file to read:
- 
+
   ```
   git pull && git checkout <branch name> && git pull && npm install && \
   ```
@@ -157,7 +151,7 @@ Now, there is a tradeoff to this ease.  Eventually you'll need recreate your Doc
   #################################################
   Seriously, Pandas Are Awesome!!
   #################################################
-  
+
   =================================================
   Oh, yeah....  and the server is online and ready.
   =================================================
