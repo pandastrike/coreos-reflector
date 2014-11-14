@@ -52,7 +52,7 @@ Ubuntu users can use:
   cd coreos-reflector
   ```
 
-3. Now, we will use fleetctl's `start` command. CoreOS relies on `*.service` files to specify jobs for the cluster (See *Background* for more information). `reflector@.service` is a *template* service file, so you'll need to add your userID to the filename.  For the rest of this tutorial, user `02` will be shown.
+3. Now, we will use fleetctl's `start` command. CoreOS relies on `*.service` files to specify jobs for the cluster (See *Background* for more information). `reflector@.service` is a *template* service file, so you'll need to add your userID to the filename (only within the command).  For the rest of this tutorial, user `02` will be shown.
 
   To access the cluster from your local machine, we need to use fleetctl's `--tunnel <address>` flag, which will make use of SSH for you.  With this flag, you only need to type the specific fleetctl command and the service it applies to.  
 
