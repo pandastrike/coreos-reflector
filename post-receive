@@ -20,7 +20,7 @@ echo "Updating Central GitHub Repository."
 echo ""
 echo "-----------"
 echo "Updating Hook Repo."
-cd ~/launch_repos/coreos-reflector
+cd ~/launch_repos/coreos-reflector/
 /usr/bin/git pull
 
 echo ""
