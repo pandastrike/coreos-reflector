@@ -12,7 +12,7 @@ echo "==================================="
 echo "Push Detected. Activating Githook."
 echo "==================================="
 
-echo `whoami`
+echo $(whoami)
 
 echo ""
 echo "-----------"
