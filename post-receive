@@ -22,7 +22,7 @@ echo "-----------"
 echo "Updating Hook Repo."
 cd ~/launch_repos/coreos-reflector/
 # Unset the git directory so that what we did is accepted.
-unset GIT_DIR
+GIT_DIR=$PWD
 /usr/bin/git pull origin master
 
 echo ""
