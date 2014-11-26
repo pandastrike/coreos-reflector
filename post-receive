@@ -7,12 +7,15 @@
 # repository, this server can sit in the middle of the process, updating the
 # GitHub repository, but also taking any other action possible on a Linux machine.
 
+# In this case, we seek to:
+# (1) Update the central, GitHub repo
+# (2) Update a secondary, non-bare repo with "git pull"
+# (3) Use the *.service files in the non-bare to re-deploy services in our CoreOS cluster.
+
 echo ""
 echo "==================================="
 echo "Push Detected. Activating Githook."
 echo "==================================="
-
-echo $(whoami)
 
 echo ""
 echo "-----------"
@@ -23,10 +26,11 @@ echo ""
 echo "-----------"
 echo "Updating Hook Repo."
 cd ~/launch_repos/coreos-reflector/
-# Unset the git directory so that what we did is accepted.
+# Unset the git directory environment variable so that what we may act upon this
+# non-bare directory with git.  This either causes GIT_DIR to be reset or asks
+# git to look for a .git file along our current $PWD.
 unset GIT_DIR
 /usr/bin/git pull origin master
-#env -i /usr/bin/git pull origin master
 
 echo ""
 echo "-----------"
