@@ -1,0 +1,35 @@
+#!/usr/bin/bash
+#===============================================================================
+# Git Hook - Post Receive
+#===============================================================================
+# This Bash script controls the actions of a webhook server. This particular
+# hook takes action *after* receiving a push.  When you push to a central
+# repository, this server can sit in the middle of the process, updating the
+# GitHub repository, but also taking any other action possible on a Linux machine.
+
+echo ""
+echo "==================================="
+echo "Push Detected. Activating Githook."
+echo "==================================="
+
+echo ""
+echo "-----------"
+echo "Updating Central GitHub Repository."
+/usr/bin/git push origin master
+
+echo ""
+echo "-----------"
+echo "Updating Hook Repo."
+cd ~/launch_repos/coreos-reflector
+/usr/bin/git pull
+
+echo ""
+echo "-----------"
+echo "Stopping Service: Reflector"
+/usr/bin/fleetctl --tunnel coreos.pandastrike.com destroy reflector@02.service
+
+echo ""
+echo "-----------"
+echo "Restarting Service: Reflector"
+/usr/bin/fleetctl --tunnel coreos.pandastrike.com start reflector@02.service
+/usr/bin/fleetctl --tunnel coreos.pandastrike.com journal -f reflector@02.service
