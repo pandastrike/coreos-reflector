@@ -20,7 +20,10 @@ echo "Updating Central GitHub Repository."
 echo ""
 echo "-----------"
 echo "Updating Hook Repo."
-cd ~/launch_repos/coreos-reflector/ && /usr/bin/git pull
+cd ~/launch_repos/coreos-reflector/
+# Unset the git directory so that what we did is accepted.
+unset GIT_DIR
+/usr/bin/git pull
 
 echo ""
 echo "-----------"
