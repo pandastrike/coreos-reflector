@@ -21,6 +21,7 @@ ExecStartPre=/usr/bin/echo "======================="
 EnvironmentFile=/etc/environment
 ExecStartPre=/usr/bin/echo "Public IP Address: ${COREOS_PUBLIC_IPV4}"
 ExecStartPre=/usr/bin/echo "Port: 80%i"
+ExecStartPre=/usr/bin/echo "This change has been deployed.  Congrats!"
 
 
 # Delete any Docker containers that share the name of the one we are about to start.

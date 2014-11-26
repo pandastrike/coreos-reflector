@@ -20,11 +20,13 @@ echo "==================================="
 echo ""
 echo "-----------"
 echo "Updating Central GitHub Repository."
+echo "-----------"
 /usr/bin/git push origin master
 
 echo ""
 echo "-----------"
 echo "Updating Hook Repo."
+echo "-----------"
 cd ~/launch_repos/coreos-reflector/
 # Unset the git directory environment variable so that what we may act upon this
 # non-bare directory with git.  This either causes GIT_DIR to be reset or asks
@@ -35,10 +37,12 @@ unset GIT_DIR
 echo ""
 echo "-----------"
 echo "Stopping Service: CoreOS Reflector Demo"
+echo "-----------"
 /usr/bin/fleetctl --tunnel coreos.pandastrike.com destroy reflector@02.service
 
 echo ""
 echo "-----------"
 echo "Restarting Service: CoreOS Reflector Demo"
+echo "-----------"
 /usr/bin/fleetctl --tunnel coreos.pandastrike.com start reflector@02.service
 /usr/bin/fleetctl --tunnel coreos.pandastrike.com journal -f reflector@02.service
