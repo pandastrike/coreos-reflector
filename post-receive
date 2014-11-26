@@ -40,6 +40,8 @@ echo "Stopping Service: CoreOS Reflector Demo"
 echo "-----------"
 /usr/bin/fleetctl --tunnel coreos.pandastrike.com destroy reflector@02.service
 
+sleep 5
+
 echo ""
 echo "-----------"
 echo "Restarting Service: CoreOS Reflector Demo"
