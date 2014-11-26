@@ -23,15 +23,15 @@ echo "Updating Hook Repo."
 cd ~/launch_repos/coreos-reflector/
 # Unset the git directory so that what we did is accepted.
 unset GIT_DIR
-/usr/bin/git pull
+/usr/bin/git pull origin master
 
 echo ""
 echo "-----------"
-echo "Stopping Service: Reflector"
+echo "Stopping Service: CoreOS Reflector Demo"
 /usr/bin/fleetctl --tunnel coreos.pandastrike.com destroy reflector@02.service
 
 echo ""
 echo "-----------"
-echo "Restarting Service: Reflector"
+echo "Restarting Service: CoreOS Reflector Demo"
 /usr/bin/fleetctl --tunnel coreos.pandastrike.com start reflector@02.service
 /usr/bin/fleetctl --tunnel coreos.pandastrike.com journal -f reflector@02.service
