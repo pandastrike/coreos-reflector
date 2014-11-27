@@ -17,7 +17,6 @@ echo "==================================="
 echo "Push Detected. Activating Githook."
 echo "==================================="
 
-
 echo ""
 echo "-----------"
 echo "Updating Central GitHub Repository."
