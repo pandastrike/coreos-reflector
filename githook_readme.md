@@ -59,6 +59,44 @@ You'll need:
 
 4. Any changes you push to hook are deployed to our CoreOS cluster.
 
+    ```shell
+    git add --all
+    git commit -m "Changes Made"
+    git push hook master
+    ```
+
+    You should see a git push to the hook-server followed by the script executing.  Any changes you made are now online in the CoreOS cluster (unless there is a delay to pull a Docker container).  Output will look something like this:
+
+    ```
+    Counting objects: 7, done.
+    Delta compression using up to 4 threads.
+    Compressing objects: 100% (4/4), done.
+    Writing objects: 100% (4/4), 1.70 KiB | 0 bytes/s, done.
+    Total 4 (delta 1), reused 0 (delta 0)
+    remote:
+    remote: ===================================
+    remote: Push Detected. Activating Githook.
+    remote: ===================================
+    remote:
+    remote: -----------
+    remote: Cloning Bare Repo
+    remote: -----------
+    remote: Cloning into 'coreos-reflector'...
+    remote: done.
+    remote:
+    remote: -----------
+    remote: Stopping Service(s)
+    remote: -----------
+    remote: Destroyed reflector@02.service
+    remote:
+    remote: -----------
+    remote: Restarting Service: CoreOS Reflector Demo
+    remote: -----------
+    remote: Unit reflector@02.service launched on aab181eb.../10.252.5.233
+    To git@hook.pandastrike.com:coreos-reflector
+        11d7ab5..5c5a3b1  master -> master
+    ```
+
 
 [0]:https://www.docker.com/
 [1]:http://git-scm.com/docs/githooks
