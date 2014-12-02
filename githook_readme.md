@@ -44,12 +44,12 @@ You'll need:
   pandahook create coreos-reflector git@github.com:pandastrike/coreos-reflector.git
   ```
 
-2. Create the `post-receive` script using PandaHook's handy generator.
+2. Create the `post-receive` script using PandaHook's handy generator.  These can be created for edited manually, but basic functions will be added to the generator tool.
   ```
   pandahook build coreos post-receive restart coreos-reflector coreos.pandastrike.com reflector@02
   ```
 
-  There is now a file named `post-receive` in your local directory.  Review it to see that it makes the necessary fleetctl calls to restart the specified service(s) on the CoreOS cluster.
+  There is now a file named `post-receive` in your local directory.  Review it to see that it makes the necessary fleetctl calls to restart the specified service(s) on the CoreOS cluster. 
 
 3.  Place this script into the hook-server.
 
