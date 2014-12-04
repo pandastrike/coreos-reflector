@@ -27,9 +27,11 @@ You'll need:
 
 5. The configuration dotfile, `.pandahook.cson`.  It stores reusable configuration data and is placed into the `$HOME` directory (ie, `~/.pandahook.cson`)
     ```coffee
+    # Required Hook-Server Stanza
     hookServer:
       address: "git@hook.pandastrike.com"
 
+    # Optional Stanza for CoreOS.
     coreos:
       address: "core@coreos.pandastrike.com"
     ```
