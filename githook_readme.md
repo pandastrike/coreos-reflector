@@ -59,7 +59,7 @@ You'll need:
     pandahook push coreos-reflector post-receive
     ```
 
-3. Push to the hook-server.  The `pandahook push` command placed an alias for the hook-server into git for you, under "hook".
+3. Push the git repository to the hook-server.  The `pandahook push` command placed an alias for the hook-server into git for you, under "hook".
 
     ```shell
     git add --all
