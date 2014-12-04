@@ -33,7 +33,7 @@ You'll need:
 
     # Optional Stanza for CoreOS.
     coreos:
-      address: "core@coreos.pandastrike.com"
+      address: "coreos.pandastrike.com"
     ```
 
 6. Setup agent-forwarding on your SSH client.  Edit `~/.ssh/config` to include the following.
