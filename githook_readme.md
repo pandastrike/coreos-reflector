@@ -22,6 +22,7 @@ You'll need:
 
 4. The githook management tool, [PandaHook](https://github.com/pandastrike/PandaHook).
     ```shell
+    npm install -g coffee-script    # If you don't already have CoffeeScript installed.
     npm install -g pandahook
     ```
 
