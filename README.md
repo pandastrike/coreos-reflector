@@ -8,6 +8,7 @@ We're going to use PandaStrike's CoreOS test cluster, which we're running on Ama
 
 Spinning up a CoreOS cluster is not the focus of this tutorial.  However, CoreOS provides a regularly updated, publicly available image of their OS, so building a cluster on Amazon (or any cloud provider) is relatively painless.
 
+
 ## Prerequisites
 
 You'll need:
